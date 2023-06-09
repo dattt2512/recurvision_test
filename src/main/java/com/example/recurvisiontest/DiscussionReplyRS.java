@@ -57,7 +57,7 @@ public class DiscussionReplyRS {
         return "{\"discussionReplyId\":" + discussionReplyId +
                 ", \"replyChildList\":" + replyChildList +
                 ", \"replyToPostId\":" + replyToPostId +
-                ", \"parentContentId\":" + parentContentId+"}";
+                ", \"parentContentId\":" + parentContentId + "}";
     }
 
     public List<DiscussionReplyRS> mapDiscussionReplyChildThreeLevelTest(List<DiscussionReplyRS> discussionHierarchy) {
@@ -93,15 +93,15 @@ public class DiscussionReplyRS {
             List<DiscussionReplyRS> childrenCopy = new ArrayList<>(children);
             for (DiscussionReplyRS child : childrenCopy) {
                 if (level >= 3) {
-                    parent.setReplyChildList(null);
+                    parent.setReplyChildList(new ArrayList<>());
                     child.setReplyToPostId(parent.getReplyToPostId());
                     discussionMapParent
                             .computeIfAbsent(parent.getReplyToPostId(), k -> new ArrayList<>()).add(child);
-                    addChildrenRecursive(child, discussionMapParent, level + 1);
-                } else {
-                    addChildrenRecursive(child, discussionMapParent, level + 1);
                 }
+                addChildrenRecursive(child, discussionMapParent, level + 1);
             }
+        } else {
+            parent.setReplyChildList(new ArrayList<>());
         }
     }
 }
